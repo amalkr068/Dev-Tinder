@@ -2,8 +2,15 @@ const express = require("express")
 const app = express()
 
 
-app.get("/user",(req,res)=>{
-    res.send({name:"Amal",age:23,place:"chy"})
+app.get("/user",(req,res,next)=>{
+    console.log("1")
+   // res.send({name:"Amal",age:23,place:"chy"})
+   next()
+})
+
+app.get('/user',(req,res)=>{
+    console.log("2")
+    res.send("amal")
 })
 
 app.post('/user',(req,res)=>{
@@ -17,6 +24,8 @@ app.delete('/user',(req,res)=>{
 app.patch('/user',(req,res)=>{
     res.send("Data updated successfully")
 })
+
+
 
 
 app.listen(3000,()=>{
