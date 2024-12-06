@@ -1,37 +1,48 @@
 const express = require("express")
 const app = express()
-const {adminAuth,userAuth} = require("./middlewares/auth")
-
-app.use('/admin',adminAuth)
-
-app.get('/admin/Alldatas',(req,res)=>{
-res.send("All admin datas")
-})
+const { connectDB } = require('./config/database')
+const {User} = require('./models/user')
 
 
-app.get('/admin/Allusers',(req,res)=>{
-    throw new error("amal")
- res.send("All user datas")
-})
 
-app.get('/admin/Allproducts',(req,res)=>{
-     res.send("All product details")
-})
 
-app.get('/user',userAuth,(req,res)=>{
-    res.send("This is users")
+app.post('/signup',async (req,res)=>{
+    const newUser = new User({
+        firstName:"sangeeth",
+        lastName:'kr',
+        emailId:"sangeeth@gmail.com",
+        password:"sangeeth@123",
+        gender:"male",
+        age:26
     })
 
-
-    app.use('/',(err,req,res,next)=>{
-        if(err){
-            res.status(400).send("Something went wrong.....")
-        }
-    })
-
-
-
-
-app.listen(3000,()=>{
-    console.log("Server started on 3000 Port")
+    try{
+        await newUser.save()
+        res.send("data added successfully....!!!")
+    }catch (err){
+        res.status(400).send("Error :"+err.message)
+    }
+  
 })
+
+
+
+
+connectDB().then(()=>{
+    console.log("DB connected successfully")
+    app.listen(3000,()=>{
+        console.log("Server started on 3000 Port")
+    })
+    
+}).catch((err)=>{
+    console.log("DB not connected successfully")
+})
+
+
+
+
+
+
+
+
+
